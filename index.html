@@ -5,29 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maximise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="main">
         <div class="container">
             <div class="inputBox">
+                <h1 class="heading">Maximise Function By Simplex Method</h1>
                 <div id="objfunc">
                     <span>Maximise </span>
-                    <span>Z=</span>
+                    <span> Z =</span>
                     <input type="text" id="a1">
                     <span>X + </span>
                     <input type="text" id="a2">
                     <span>Y </span>
                 </div>
                 <div id="constraints">
-                    <div class="contrainteqn">
+                    <div class="constrainteqn">
                         <input type="text" class="c" >
                         <span>X + </span>
                         <input type="text" class="c">
                         <span>Y  &le; </span>
                         <input type="text" class="c">
                     </div>
-                    <div class="contrainteqn">
+                    <div class="constrainteqn">
                         <input type="text" class="c">
                         <span>X + </span>
                         <input type="text" class="c">
@@ -37,7 +41,10 @@
                 </div>
                 <button id="calculate">Calculate</button>
             </div>
-            <div id="result">
+            <div class="box">
+                <p class="text">Solution:</p>
+                <div id="result">
+                </div>
             </div>
         </div>
     </div>
