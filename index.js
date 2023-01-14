@@ -1,8 +1,10 @@
 const calc=document.querySelector("#calculate")
 const resultContainer=document.querySelector("#result")
+const box=document.querySelector(".box")
+box.classList.add("hidden")
 let data=[]
 let flag=false
-const pivot={
+let pivot={
     pivotColumn:null,
     pivotRow:null,
     val:["R","S"]
@@ -12,48 +14,49 @@ const generateTable=()=>{
     table.classList.add("table")
     const content=`
         <!-- heading row -->
-        <span>B.V</span>
+        <span style="border-radius:7px 0px 0px 0px;">B.V</span>
         <span>X</span>
         <span>Y</span>
         <span>R</span>
         <span>S</span>
         <span>Z</span>
-        <span>R.H.S</span>
+        <span style="border-radius:0px 7px 0px 0px;">R.H.S</span>
         <!-- row 1 -->
         <span>${pivot.val[0]}</span>
-        <span>${(Math.floor((data[0][0])*1000))/1000}</span>
-        <span>${(Math.floor((data[0][1])*1000))/1000}</span>
-        <span>${(Math.floor((data[0][2])*1000))/1000}</span>
-        <span>${(Math.floor((data[0][3])*1000))/1000}</span>
-        <span>${(Math.floor((data[0][4])*1000))/1000}</span>
-        <span>${(Math.floor((data[0][5])*1000))/1000}</span>
+        <span>${(Math.floor((data[0][0])*10000))/10000}</span>
+        <span>${(Math.floor((data[0][1])*10000))/10000}</span>
+        <span>${(Math.floor((data[0][2])*10000))/10000}</span>
+        <span>${(Math.floor((data[0][3])*10000))/10000}</span>
+        <span>${(Math.floor((data[0][4])*10000))/10000}</span>
+        <span>${(Math.floor((data[0][5])*10000))/10000}</span>
         <!-- row 2 -->
         <span>${pivot.val[1]}</span>
-        <span>${(Math.floor((data[1][0])*1000))/1000}</span>
-        <span>${(Math.floor((data[1][1])*1000))/1000}</span>
-        <span>${(Math.floor((data[1][2])*1000))/1000}</span>
-        <span>${(Math.floor((data[1][3])*1000))/1000}</span>
-        <span>${(Math.floor((data[1][4])*1000))/1000}</span>
-        <span>${(Math.floor((data[1][5])*1000))/1000}</span>
+        <span>${(Math.floor((data[1][0])*10000))/10000}</span>
+        <span>${(Math.floor((data[1][1])*10000))/10000}</span>
+        <span>${(Math.floor((data[1][2])*10000))/10000}</span>
+        <span>${(Math.floor((data[1][3])*10000))/10000}</span>
+        <span>${(Math.floor((data[1][4])*10000))/10000}</span>
+        <span>${(Math.floor((data[1][5])*10000))/10000}</span>
         <!-- row 3 -->
-        <span></span>
-        <span>${(Math.floor((data[2][0])*1000))/1000}</span>
-        <span>${(Math.floor((data[2][1])*1000))/1000}</span>
-        <span>${(Math.floor((data[2][2])*1000))/1000}</span>
-        <span>${(Math.floor((data[2][3])*1000))/1000}</span>
-        <span>${(Math.floor((data[2][4])*1000))/1000}</span>
-        <span>${(Math.floor((data[2][5])*1000))/1000}</span>
+        <span style="border-radius:0px 0px 0px 7px;"></span>
+        <span>${(Math.floor((data[2][0])*10000))/10000}</span>
+        <span>${(Math.floor((data[2][1])*10000))/10000}</span>
+        <span>${(Math.floor((data[2][2])*10000))/10000}</span>
+        <span>${(Math.floor((data[2][3])*10000))/10000}</span>
+        <span>${(Math.floor((data[2][4])*10000))/10000}</span>
+        <span style="border-radius:0px 0px 7px 0px;">${(Math.floor((data[2][5])*10000))/10000}</span>
     `
     table.innerHTML=content
     resultContainer.appendChild(table)
 }
 const appendMessage=(message)=>{
-    const h3=document.createElement("h4")
-    h3.classList.add("stepDefinition")
-    h3.innerHTML=message
-    resultContainer.appendChild(h3)
+    const m=document.createElement("p")
+    m.classList.add("stepDefinition")
+    m.innerHTML=message
+    resultContainer.appendChild(m)
 }
 const fetch=()=>{
+    let validity=true
     const a1=parseFloat(document.querySelector("#a1").value)
     const a2=parseFloat(document.querySelector("#a2").value)
     const cnst=[...document.querySelectorAll(".c")]
@@ -62,7 +65,21 @@ const fetch=()=>{
         [parseFloat(cnst[0].value),parseFloat(cnst[1].value),parseFloat(cnst[2].value)],
         [parseFloat(cnst[3].value),parseFloat(cnst[4].value),parseFloat(cnst[5].value)],
     ]
-    return arr
+    for(let i=0;i<3;i++){
+        arr[i].forEach((x,j)=>{
+            if(isNaN(x)){
+                validity=false
+            }
+        })
+        if(validity==false){
+            break
+        }
+    }
+    if(validity==true){
+        return arr
+    }else{
+        return false
+    }
 }
 const standardise=(i)=>{
     const arr=[
@@ -114,7 +131,7 @@ const solveNextStep=()=>{
     const otherRow=[0,1,2]
     otherRow.splice(otherRow.indexOf(pivot.pivotRow),1)
     const a=data[pivot.pivotRow][pivot.pivotColumn]
-    appendMessage(`R<sub>${pivot.pivotRow+1}</sub> ->  R<sub>${pivot.pivotRow+1}</sub>/(${(Math.floor(a*1000))/1000})`)
+    appendMessage(`R<sub>${pivot.pivotRow+1}</sub> &#8594 R<sub>${pivot.pivotRow+1}</sub> / (${(Math.floor(a*10000))/10000})`)
     // making the pivot element 1
     for(let i=0;i<6;i++){
         data[pivot.pivotRow][i]/=a
@@ -124,10 +141,10 @@ const solveNextStep=()=>{
     const a1=data[otherRow[0]][pivot.pivotColumn]
     const a2=data[otherRow[1]][pivot.pivotColumn]
     appendMessage(`
-        R<sub>${otherRow[0]+1}</sub> ->  R<sub>${otherRow[0]+1}</sub> - (${(Math.floor(a1*1000))/1000})*R<sub>${pivot.pivotRow+1}</sub>
+        R<sub>${otherRow[0]+1}</sub> &#8594 R<sub>${otherRow[0]+1}</sub> - (${(Math.floor(a1*10000))/10000})*R<sub>${pivot.pivotRow+1}</sub>
     `)
     appendMessage(`
-        R<sub>${otherRow[1]+1}</sub> ->  R<sub>${otherRow[1]+1}</sub> - (${(Math.floor(a2*1000))/1000})*R<sub>${pivot.pivotRow+1}</sub>
+        R<sub>${otherRow[1]+1}</sub> &#8594 R<sub>${otherRow[1]+1}</sub> - (${(Math.floor(a2*10000))/10000})*R<sub>${pivot.pivotRow+1}</sub>
     `)
     for(let i=0;i<6;i++){
         data[otherRow[0]][i]-=(a1*(data[pivot.pivotRow][i]))
@@ -146,11 +163,9 @@ const simplex=()=>{
         if(pivot.val.indexOf("Y")!=-1){
             y=data[pivot.val.indexOf("Y")][5]
         }
-        appendMessage(`
-            Optimal Soln is obtained.<br>
-            Maximise(Z)=${data[2][5]}<br>
-            at X=${Math.floor(x*1000)/1000} and Y=${Math.floor(y*1000)/1000}
-        `)
+        appendMessage("Since all entries in last row are non-negative, optimal soln is obtained.")
+        appendMessage(`Maximise (Z) = <span style="color:#1717a8;">${data[2][5]}</span>`)
+        appendMessage(`at X = <span style="color:#1717a8;">${Math.floor(x*10000)/10000}</span> and Y = <span style="color:#1717a8;">${Math.floor(y*10000)/10000}</span>`)
         flag=true
     }else{
         // now find the pivot row (data[pivotRow][pivotColumn]=pivot Element)
@@ -169,17 +184,31 @@ const simplex=()=>{
              }
         }
         appendMessage(`Here R<sub>${pivot.pivotRow+1}</sub> is the Pivot Row and 
-        ${Math.floor(data[pivot.pivotRow][pivot.pivotColumn]*1000)/1000} is the pivot Element.`)
+        ${Math.floor(data[pivot.pivotRow][pivot.pivotColumn]*10000)/10000} is the pivot Element.`)
         solveNextStep()
     }
 }
 calc.addEventListener("click",()=>{
     // fetch data
+    flag=false
+    resultContainer.innerHTML=""
+    pivot={
+        pivotColumn:null,
+        pivotRow:null,
+        val:["R","S"]
+    }
+    box.classList.add("hidden")
     data =fetch()
-    // standardising data for simplex method
-    data=standardise(data)
-    generateTable()
-    while(flag==false){
-        simplex()
+    if(data!=false){
+        // standardising data for simplex method
+        data=standardise(data)
+        generateTable()
+        while(flag==false){
+            simplex()
+        }
+        box.classList.remove("hidden")
+    }else{
+        appendMessage(`<p style="color:red;">Please give proper inputs.</p>`)
+        box.classList.remove("hidden")
     }
 })
